@@ -1,6 +1,7 @@
-# This is a demo script for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
+# This is file of methods for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
 # Paper authors: Zilong Bai, S.S. Ravi, Ian Davidson
 # Code author: Zilong Bai
+# Methods in this file serve to post-process the result of Gurobi solvers
 import numpy as np
 from gurobipy import *
 

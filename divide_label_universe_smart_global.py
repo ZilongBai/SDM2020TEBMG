@@ -1,36 +1,9 @@
+# This is file of methods for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
+# Paper authors: Zilong Bai, S.S. Ravi, Ian Davidson
+# Code author: Zilong Bai
+# This file contains functions to achieve global disjointness for tag universes. Part of Algorithm 1
 import numpy as np
 from gurobipy import *
-
-def label_universe_orthogonalize(Ils, Uls, Ng, T): # This step by itself fails!!!
-# There are k label universes in Uls and k influence stats in Ils
-# The input tag set collections are grouped according to C (Ng x p) into p non-overlapping groups/cohorts.
-
-        m = Model('Label Universe Orthogonalization with Minimum Effect on Edges')
-
-        # Adding Variables
-        ## Main Variable: block level attribute cover set
-        RU = m.addVars(Ng,T,vtype=GRB.BINARY,name='Remove_from_each_label_universe')
-
-        ## Objective function
-	obj = quicksum(Ils[i][t]*RU[i,t] for t in range(T)
-	                                 for i in range(Ng)) # overall affected tags that are on the edges within blocks
-
-        m.setObjective(obj, GRB.MINIMIZE) # Find a way to wipe out tags to achieve orthogonality while minimizing the affected by minimizing the affected tags on edges.
-
-        # Adding Constraints
-        ## Define Intermediate Variables
-	print Ng
-        m.addConstrs(((Uls[i][t]*(1-RU[i,t]) + Uls[j][t]*(1-RU[j,t])) <= 1 for t in range(T)
-									   for i in range(Ng)
-                                                        		   for j in range(Ng)
-                                                        		   if i < j), name='universe-orthogonality')
-
-        # model update
-        m.update()
-        # model optimize
-        m.optimize()
-
-        return m
 
 def luo_min_fl(Uls, Ng, T):
         m = Model('Label Universe Orthogonalization with Minimal Forgotten Labels')

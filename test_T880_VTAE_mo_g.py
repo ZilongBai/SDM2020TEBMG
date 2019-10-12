@@ -1,12 +1,11 @@
 # This is a demo script for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
 # Paper authors: Zilong Bai, S.S. Ravi, Ian Davidson
 # Code author: Zilong Bai
-# This code demonstrate Algorithm 1 works to solve for a relaxed version of VTAE with partial disjointness
+# Minimize overlap for VTAE with global disjointness
 from gurobipy import *
 import numpy as np
 import sys
 import descriptor_discover
-import divide_label_universe_smart_partial	
 import edge_set_operations_smart
 import util_smart
 
@@ -100,42 +99,10 @@ original_edges = 0
 for i in range(Ng):
 	original_edges = original_edges + len(Els[i])
 
-D_min_dl = np.zeros((Ng, T))
-D_max_sig = np.zeros((Ng, T))
+m = descriptor_discover.vtae_all_min_ol(Els, Ng, T)
 
-m = divide_label_universe_smart_partial.luo_min_fl(UEls, Mc, Ng, T)
-luo_step1_time = m.runTime
-cons_fl = m.objVal
-m = divide_label_universe_smart_partial.luo_min_influence_cons_fl(IEls, UEls, Mc, Ng, T, cons_fl)
-luo_step2_time = m.runTime
-RU = util_smart.unpack_gurobi_removed_tags(m, Ng, T)
+D, Dw, Db = util_smart.unpack_gurobi_model_descriptors_BM(m,Ng,k,T)
 
-Els = edge_set_operations_smart.batch_label_set_clean_up(Els, RU)
+mydata[kstr+'_'+repstr] = [D,m.runTime]
 
-cover_time_min_dl = np.zeros(Ng)
-cover_time_max_sig = np.zeros(Ng)
-
-survived_edges = 0
-for i in range(Ng):
-	survived_edges = survived_edges + len(Els[i])
-
-for i in range(Ng):
-	if len(Els[i])>0:
-		print len(Els[i])
-		m = descriptor_discover.single_graph_min_dl(Els[i],IEls[i],T)
-		cover_time_min_dl[i] = m.runTime		
-		ub = m.objVal
-		D_min_dl[i,:] = util_smart.unpack_gurobi_single_graph_descriptors(m,T)
-		m = descriptor_discover.single_graph_dl_ub_max_sig(Els[i], IEls[i], ub, T)
-		cover_time_max_sig[i] = m.runTime
-		D_max_sig[i,:] = util_smart.unpack_gurobi_single_graph_descriptors(m,T)
-	else:
-		print Ng
-		print i
-		print len(Els[i])
-		print "No edges in this set!!!"
-mydata[kstr+'_'+repstr] = [D_min_dl, D_max_sig, luo_step1_time, luo_step2_time, cover_time_min_dl, cover_time_max_sig, original_edges, survived_edges]
-print original_edges
-print survived_edges
-
-np.savez('VTAE_partial_T880.npz',data=mydata)
+np.savez('VTAE_mo_g_T880.npz',data=mydata)
