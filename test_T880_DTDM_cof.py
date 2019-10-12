@@ -1,7 +1,8 @@
-# This is a demo script for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
+# This is a demo script to implement related work for baseline to compare in the paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
 # Paper authors: Zilong Bai, S.S. Ravi, Ian Davidson
 # Code author: Zilong Bai
-# This code serve to reproduce the DTDM with cover or forget relaxation from paper ....
+# This code serve to reproduce the DTDM with cover or forget relaxation from paper "The Cluster Description Problem - Complexity Results, Formulations and Approximations"
+# authored by Ian Davidson, Antoine Gourru, and S Ravi, published at Advances in Neural Information Processing Systems 31 (NIPS 2018)
 from gurobipy import *
 import numpy as np
 import sys
