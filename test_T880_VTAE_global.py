@@ -1,7 +1,7 @@
 # This is a demo script for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
 # Paper authors: Zilong Bai, S.S. Ravi, Ian Davidson
 # Code author: Zilong Bai
-# This code demonstrate Algorithm 1 works to solve for a relaxed version of VTAE with global disjointness
+# This code demonstrates how Algorithm 1 works to solve for a relaxed version of VTAE with global disjointness
 from gurobipy import *
 import numpy as np
 import sys
