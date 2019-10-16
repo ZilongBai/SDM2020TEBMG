@@ -1,7 +1,8 @@
 # This is file of methods for paper "Towards Explaining Block Models of Graphs" submitted to SIAM Data Mining SDM2020
 # Paper authors: Zilong Bai, S.S. Ravi, Ian Davidson
 # Code author: Zilong Bai
-# This file contains methods to create edge sets and edge set collection based on graph structure and the given block model.
+# This file contains methods to create edge sets and edge set collection based on graph structure and the given block model. 
+# This file also contains methods to process the tag allocation matrices after excluding tags from different tag universes.
 import numpy as np
 
 def label_set_collection_creation(X,L,T):
